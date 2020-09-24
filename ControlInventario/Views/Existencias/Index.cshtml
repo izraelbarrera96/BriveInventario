@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Existecias";
+}
+
+<div class="d-flex justify-content-between">
+    <h2>Existencias</h2>
+    <button id="btnActualizar" class="btn btn-sm btn-outline-success">Actualizar existencias</button>
+</div>
+
+<div id="dTables">
+
+</div>
+
+<template id="tTable">
+    <h3 class="tituloTable"></h3>
+    <div style="max-height:420px; overflow:auto">
+        <table class="table table-hover table-striped table-light">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" style="top: 0;position: sticky;">Producto</th>
+                    <th scope="col" style="top: 0;position: sticky;">Codigo</th>
+                    <th scope="col" style="top: 0;position: sticky;">Cantidad</th>
+                    <th scope="col" style="top: 0;position: sticky;">Precio</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template id="tRowTable">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</template>
+
+<script defer>
+
+    var Existencias = [];
+
+    document.querySelector("#btnActualizar").addEventListener('click', function (e) {
+        window.location.href = '@Url.Action("Actualizar", "Existencias")';
+    });
+
+    async function Inicio() {
+        Existencias = Array.from(await inventarioFetch('@Url.Action("ConsultarExistencias", "Existencias")', 'GET', {}));
+        GeneraTablas(Existencias);
+    }
+
+    function GeneraTablas(Existencias) {
+        let sucursales = [];
+        let TemplateTable = document.querySelector('#tTable');
+        let TemplateRow = document.querySelector('#tRowTable');
+
+        // Ciclo para crear las tablas
+        Existencias.forEach((E) => {
+            if (!sucursales.includes(E.claveSucursal)) {
+                sucursales.push(E.claveSucursal);
+
+                let TmpCloneTable = TemplateTable.content.cloneNode(true);
+                TmpCloneTable.querySelector('.tituloTable').innerText = E.nombreSucursal;
+                TmpCloneTable.querySelector('.tbody').id = E.claveSucursal;
+
+                document.querySelector('#dTables').appendChild(TmpCloneTable);
+            }
+        });
+
+        // Ciclo para agregar elementos
+        Existencias.forEach((E) => {
+            let TmpCloneRows = TemplateRow.content.cloneNode(true);
+            TmpCloneRows.children[0].cells[0].innerText = E.producto;
+            TmpCloneRows.children[0].cells[1].innerText = E.clave;
+            TmpCloneRows.children[0].cells[2].innerText = E.cantidad;
+            TmpCloneRows.children[0].cells[3].innerText = E.precio;
+
+            document.querySelector('#' + E.claveSucursal).appendChild(TmpCloneRows);
+        });
+
+    }
+
+    Inicio();
+
+</script>
+

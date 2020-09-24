@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<div class="d-flex justify-content-between p-3">
+    <h2>Productos</h2>
+    <button id="btnActualizar" class="btn btn-sm btn-outline-success">Actualizar Productos</button>
+</div>
+
+<div id="dTables">
+    <div style="max-height:420px; overflow:auto">
+        <table class="table table-hover table-striped table-light">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" style="top: 0;position: sticky;">Producto</th>
+                    <th scope="col" style="top: 0;position: sticky;">Codigo</th>
+                    <th scope="col" style="top: 0;position: sticky;">Precio</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyP">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<template id="tRowTable">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</template>
+
+<script defer>
+
+    var Productos = [];
+
+    document.querySelector("#btnActualizar").addEventListener('click', function (e) {
+        window.location.href = '@Url.Action("Actualizar", "Productos")';
+    });
+
+    async function Inicio() {
+        Productos = Array.from(await inventarioFetch('@Url.Action("ConsultarProductos", "Productos")', 'GET', {}));
+        GeneraFilas(Productos);
+    }
+
+    function GeneraFilas(Productos) {
+
+        let TemplateRow = document.querySelector('#tRowTable');
+
+        // Ciclo para agregar elementos
+        Productos.forEach((P) => {
+            let TmpCloneRows = TemplateRow.content.cloneNode(true);
+            TmpCloneRows.children[0].cells[0].innerText = P.nombre;
+            TmpCloneRows.children[0].cells[1].innerText = P.clave;
+            TmpCloneRows.children[0].cells[2].innerText = P.precio;
+
+            document.querySelector('#tbodyP').appendChild(TmpCloneRows);
+        });
+
+    }
+
+    Inicio();
+
+</script>
+

@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Actualizar Inventario";
+}
+
+
+<div class="d-flex justify-content-between">
+    
+    <div class="d-flex flex-column">
+        <label for="SelectProductos">Producto:</label>
+        @Html.DropDownList("SelectProductos")
+    </div>
+    
+    <div class="d-flex flex-column">
+        <label for="SelectSucursal">Sucursal:</label>
+        @Html.DropDownList("SelectSucursal")
+    </div>
+
+    <div class="d-flex flex-column">
+        <label for="inCantidad">Cantidad:</label>
+        <input id="inCantidad" class="form-control-sm" type="number" min="1" step="1" />
+    </div>
+
+    <button id="btnAgregar" class="btn btn-sm btn-outline-success" onclick="ActualizarArticulos(true)">Agregar Articulo(s)</button>
+    <button id="btnQuitar" class="btn btn-sm btn-outline-danger" onclick="ActualizarArticulos(false)">Quitar Articulo(s)</button>
+
+</div>
+
+<script defer>
+
+    document.querySelectorAll('select').forEach((s) => { s.classList.add("form-control-sm") })
+
+    async function ActualizarArticulos(Tipo)
+    {
+        let Parametros = {
+            Articulo: {
+                ID : 0,
+                Sucursal : document.querySelector("#SelectSucursal").value,
+                Producto : document.querySelector("#SelectProductos").value,
+                Cantidad : parseInt(document.querySelector("#inCantidad").value)
+            },
+            Tipo: Tipo
+        }
+        
+        let JsonResult = await inventarioFetch('@Url.Action("ModificarExistencia", "Existencias")', 'POST', Parametros);
+
+        if(JsonResult.Resultado){
+            alert(JsonResult.Mensaje);
+        }
+        else{
+            alert(JsonResult.Mensaje);
+        }
+    }
+
+</script>
+

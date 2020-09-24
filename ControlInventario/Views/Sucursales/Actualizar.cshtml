@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Actualizar Sucursales";
+}
+
+
+<div class="d-flex justify-content-between">
+
+    <div class="d-flex flex-column">
+        <label for="inClave">Clave</label>
+        <input id="inClave" class="form-control-sm" type="text" minlength="3" maxlength="3" />
+    </div>
+
+    <div class="d-flex flex-column">
+        <label for="inNombre">Nombre</label>
+        <input id="inNombre" class="form-control-sm" type="text" minlength="1" maxlength="100" />
+    </div>
+
+    <button id="btnAgregar" class="btn btn-sm btn-outline-success" onclick="ActualizarSucursales(true)">Agregar Sucursal</button>
+    <button id="btnQuitar" class="btn btn-sm btn-outline-danger" onclick="ActualizarSucursales(false)">Quitar Sucursal</button>
+
+</div>
+
+<script defer>
+
+    async function ActualizarSucursales(Tipo)
+    {
+        let Parametros = {
+            Sucursal: {
+                Clave: document.querySelector("#inClave").value,
+                Nombre: document.querySelector("#inNombre").value,
+            },
+            Tipo: Tipo
+        }
+
+        let JsonResult = await inventarioFetch('@Url.Action("ModificarSucursales", "Sucursales")', 'POST', Parametros);
+
+        if(JsonResult.Resultado){
+            alert(JsonResult.Mensaje);
+        }
+        else{
+            alert(JsonResult.Mensaje);
+        }
+    }
+
+</script>
+
