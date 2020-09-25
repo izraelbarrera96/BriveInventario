@@ -6,6 +6,8 @@ using ControlInventario.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ControlInventario.Controllers
 {
@@ -50,10 +52,13 @@ namespace ControlInventario.Controllers
         }
 
         [HttpPost]
-        public JsonResult ModificarExistencia(Existencia Articulo,bool Tipo)
+        public JsonResult Modificar([FromBody] Dictionary<string, object> Parametros)
         {
             bool Resultado = false;
             string Mensaje = "";
+
+            Existencia Articulo = JsonSerializer.Deserialize<Existencia>(Parametros["Articulo"].ToString());
+            bool Tipo = JsonSerializer.Deserialize<bool>(Parametros["Tipo"].ToString().ToLower());
 
             try
             {

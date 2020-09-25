@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using ControlInventario.Data;
 using ControlInventario.Models;
 using System.Linq;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace ControlInventario.Controllers
 {
@@ -30,10 +32,13 @@ namespace ControlInventario.Controllers
         }
 
         [HttpPost]
-        public JsonResult ModificarSucursales(Sucursal Sucursal,bool Tipo)
+        public JsonResult ModificarSucursales([FromBody]Dictionary<string, object> Parametros)
         {
             bool Resultado = false;
             string Mensaje = "";
+
+            Sucursal Sucursal = JsonSerializer.Deserialize<Sucursal>(Parametros["Sucursal"].ToString());
+            bool Tipo = JsonSerializer.Deserialize<bool>(Parametros["Tipo"].ToString().ToLower());
 
             try
             {

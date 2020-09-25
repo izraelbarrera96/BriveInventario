@@ -52,7 +52,7 @@ namespace ControlInventario.Models
 
             if (!String.IsNullOrEmpty(this.Clave))
             {
-                if (this.Clave.Length == 6)
+                if (this.Clave.Length == 3)
                 {
                     bClave = true;
                 }
@@ -74,14 +74,6 @@ namespace ControlInventario.Models
         public string Sucursal { get; set; }
         public string Producto { get; set; }
         public int Cantidad { get; set; }
-
-        public Existencia(int ID, string Sucursal, string Producto, int Cantidad) {
-            this.ID = ID;
-            this.Sucursal = Sucursal;
-            this.Producto = Producto;
-            this.Cantidad = Cantidad;
-        }
-
         public bool Validar()
         {
             bool bSucursal = false;

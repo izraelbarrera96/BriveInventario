@@ -41,13 +41,13 @@
             Tipo: Tipo
         }
         
-        let JsonResult = await inventarioFetch('@Url.Action("ModificarExistencia", "Existencias")', 'POST', Parametros);
+        let JsonResult = await inventarioFetch('@Url.Action("Modificar", "Existencias")', 'POST', Parametros);
 
-        if(JsonResult.Resultado){
-            alert(JsonResult.Mensaje);
+        if(JsonResult.resultado){
+            alert(JsonResult.mensaje);
         }
         else{
-            alert(JsonResult.Mensaje);
+            alert(JsonResult.mensaje);
         }
     }
 

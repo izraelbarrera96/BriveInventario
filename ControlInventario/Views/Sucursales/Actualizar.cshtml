@@ -34,11 +34,11 @@
 
         let JsonResult = await inventarioFetch('@Url.Action("ModificarSucursales", "Sucursales")', 'POST', Parametros);
 
-        if(JsonResult.Resultado){
-            alert(JsonResult.Mensaje);
+        if(JsonResult.resultado){
+            alert(JsonResult.mensaje);
         }
         else{
-            alert(JsonResult.Mensaje);
+            alert(JsonResult.mensaje);
         }
     }
 
